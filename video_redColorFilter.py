@@ -3,7 +3,7 @@
 """
 Created on Sat Sep 29 12:01:35 2018
 
-@author: kota421
+@author: kota421, David Chae
 """
 import cv2
 import numpy as np
