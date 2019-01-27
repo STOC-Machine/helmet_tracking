@@ -15,10 +15,10 @@ from region_of_interest import region_of_interest, mask4ROI
 ###---------RUN TEST---------###
 # =============================================================================
 # ## test image
-# img = cv2.imread("test_5.png",1)
+# img = cv2.imread("test_images/test_5.png",1)
 # img_small = cv2.resize(img,(200,100))
 # #color filtering
-# _,img_red = color_filter("test_5.png")
+# _,img_red = color_filter("test_images/test_5.png")
 # # noise canceling
 # img_noiseless = noise_cancel(img_red)
 # # resize
@@ -48,11 +48,13 @@ from region_of_interest import region_of_interest, mask4ROI
 def testROI(n):
     for i in range(1,12):
         try:
-            name = "test_"+str(i)+".png"
+            name = "test_images/test_"+str(i)+".png"
+            img = cv2.imread(name,1)
+            img_small = cv2.resize(img,(200,100))
         except:
-            name = "test_"+str(i)+".jpg"
-        img = cv2.imread(name,1)
-        img_small = cv2.resize(img,(200,100))
+            name = "test_images/test_"+str(i)+".jpg"
+            img = cv2.imread(name,1)
+            img_small = cv2.resize(img,(200,100))
         #color filtering
         _,img_red = color_filter(name)
         # noise canceling
