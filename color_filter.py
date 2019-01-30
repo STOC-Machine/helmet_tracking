@@ -18,7 +18,7 @@ import numpy as np
 import cv2
 from matplotlib import pyplot as plt
 
-def redColorFilter_simple(IMG_NAME):
+def redColorFilter_simple(image):
     """
     Finds parts of the image with red elements and returns two pictures:
         filtered: partial image with red parts
@@ -26,12 +26,10 @@ def redColorFilter_simple(IMG_NAME):
     
     IMG_NAME: str, file name of the image you want to apply red color filter
     """
-    # Read image as a color image(bgr)
-    bgr = cv2.imread(IMG_NAME,1)
     # Rotating image to change this from BGR to RGB
-    img = bgr[...,::-1]
+    rgb = image[...,::-1]
     # Change read image from RGB to HSV
-    hsv = cv2.cvtColor(img,cv2.COLOR_RGB2HSV)
+    hsv = cv2.cvtColor(rgb,cv2.COLOR_RGB2HSV)
     # Apply threshold with red
     
     # define range of given color in HSV
@@ -49,7 +47,7 @@ def redColorFilter_simple(IMG_NAME):
     comb_mask = np.logical_or(mask1,mask2)
     comb_mask = comb_mask.astype(np.uint8)
 
-    res = cv2.bitwise_and(bgr,bgr,mask=comb_mask)
+    res = cv2.bitwise_and(image,image,mask=comb_mask)
     return comb_mask, res
 
 # =============================================================================

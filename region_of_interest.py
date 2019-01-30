@@ -78,7 +78,7 @@ def getIslands(image):
                 island = BFS(x,y,image,isColored)
                 labelArray(label_array,island,label)
                 labelArray(master_label,island,label)
-                print('Island Area[px]:',len(island))
+                #print('Island Area[px]:',len(island))
                 islands.append(island)
                 label_arrays.append(label_array)
                 label += 0
@@ -137,14 +137,20 @@ def mask4ROI(image,mode='biggest'):
     """ 
     islands,label_arrays = getIslands(image)
     if mode=='top':
+        x,y = array2Coordinates(label_arrays[0])
+        maxX, minX =max(x),min(x)
+        maxY, minY =max(y),min(y)
         mask = maskingPolygonMaker(label_arrays[0])
     if mode=='biggest':
         island_areas = [] 
         for island in islands:
             island_areas.append(len(island))
         biggest = island_areas.index(max(island_areas))
+        x,y = array2Coordinates(label_arrays[biggest])
+        maxX, minX =max(x),min(x)
+        maxY, minY =max(y),min(y)
         mask = maskingPolygonMaker(label_arrays[biggest])
-    return mask
+    return mask, (maxX+minX)/2, (maxY+minY)/2
 
 def region_of_interest(image,mask):
     """
