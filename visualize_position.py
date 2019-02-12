@@ -14,89 +14,28 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 from matplotlib import style
 
-style.use('fivethirtyeight')
-
-fig = plt.figure()
-ax1 = fig.add_subplot(1,1,1)
-
-def animate(i):
-    graph_data = open('example.txt','r').read()
-    lines = graph_data.split('\n')
-    xs = []
-    ys = []
-    for line in lines:
-        if len(line) > 1:
-            x, y = line.split(',')
-            xs.append(float(x))
-            ys.append(float(y))
-    ax1.clear()
-    ax1.plot(xs, ys)
-
-def offer_XY(X,Y):
-    cap = cv2.VideoCapture(0)
-    _, frame = cap.read()
-    try:
-        x,y = test(frame)
-        X.append(x)
-        Y.append(y)
-    except:
-        pass
-    return X,Y
-
-def test_video(X,Y):
-    X,Y = offer_XY(X,Y)
-    #plt.axis([0,200,0,100])
-# =============================================================================
-#     cap = cv2.VideoCapture(0)
-#     _, frame = cap.read()
-#     #===== OPERATION ========#
-#     try:
-#         x,y = test(frame)
-#         X.append(x)
-#         Y.append(y)
-#     except:
-#         pass
-#     #========================#
-# =============================================================================
-    ax1.clear()
-    ax1.plot(X, Y)
-
 def visualize_position():
-    plt.axis([0,200,0,100])
     X=[]
     Y=[]
-    fig = plt.gcf()
-    fig.show()
-    fig.canvas.draw()
     cap = cv2.VideoCapture(0)
-    while True:
-        ### Getting the frame as input
-        # read a frame
+    stop = None
+    
+    while not stop:
+        # Read a frame
         _, frame = cap.read()
-        #===== OPERATION ========#
-
-        try:
-            x,y = test(frame)
+        # Add the center point of a red object if it exists
+        img,x,y = test(frame)
+        if x != None:
             X.append(x)
             Y.append(y)
-            plt.scatter(x,y)
-        except IndexError or ValueError:
-            pass
-        #========================#
-        
+        # Plot it
+        plt.xlim(0,img.shape[2])
+        plt.ylim(0,img.shape[1])
+        plt.scatter(X,Y)
         plt.show()
-        plt.xlim([0, 200])
-        plt.ylim([0, 100])
+        plt.clf()
         time.sleep(0.5)
-        fig.canvas.draw()
-        cv2.imshow('frame',frame) 
-        k = cv2.waitKey(5) & 0xFF
-        if k == 27: # Press ESC key to escape
-            break   
-    cv2.destroyAllWindows()
+        # Press any key to stop
+        stop = input()
 
-X=[]
-Y=[]      
-#ani = animation.FuncAnimation(fig, test_video(X,Y), interval=1000)
-#plt.show()
 visualize_position()

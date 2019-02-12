@@ -108,4 +108,4 @@ def test_video():
     cv2.destroyAllWindows()
 
 ## Uncomment line below to test a video
-test_video()
+#test_video()
