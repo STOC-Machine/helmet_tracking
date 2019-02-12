@@ -5,7 +5,6 @@ Created on Sat Jan 19 12:54:30 2019
 
 @author: kota421
 """
-## BUG with an image that does not have a red pixel
 
 import cv2
 from color_filter import redColorFilter_simple as color_filter
