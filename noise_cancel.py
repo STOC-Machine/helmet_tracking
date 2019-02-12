@@ -9,8 +9,7 @@ import cv2
 def noise_cancel(color_filtered):
     """
     Function to apply noise canceling techniques to 
-    to a given image.
-    Uses erosion.
+    to a given image using erosion.
     
     Assumes: 
         color_filtered: cv2.img, BGR

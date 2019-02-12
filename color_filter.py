@@ -7,12 +7,8 @@ Created on Sat Sep 29 11:19:43 2018
 """
 
 ### USE ONLY redColorFilter_simple ##
-
-
 ###
-# Functions to apply color filters to static images
-# 
-
+# Functions to apply a color filter to static images
 
 import numpy as np
 import cv2
@@ -20,11 +16,14 @@ from matplotlib import pyplot as plt
 
 def redColorFilter_simple(image):
     """
-    Finds parts of the image with red elements and returns two pictures:
-        filtered: partial image with red parts
-        res: overlapping image of original image and filtered
-    
-    IMG_NAME: str, file name of the image you want to apply red color filter
+    Function to apply a color filter to an image.
+
+    ASSUMES:
+        -image: numpy array, cv2 image in BGR
+    RETURNS:
+        -comb_mask: numpy array of 0 and 1, 1 means the corresponding pixel in
+            image is within the range (i.e. is red)
+        -res: numpy array, resulting image
     """
     # Rotating image to change this from BGR to RGB
     rgb = image[...,::-1]
@@ -50,17 +49,7 @@ def redColorFilter_simple(image):
     res = cv2.bitwise_and(image,image,mask=comb_mask)
     return comb_mask, res
 
-# =============================================================================
-# ### test redColorFilter_simple with an image that contains many human faces
-# IMG_NAME = 'test_3.jpg'
-# orig = cv2.imread(IMG_NAME,1)
-# #cv2.imshow("original",orig)
-# red_part, res= redColorFilter_simple(IMG_NAME)
-# cv2.imshow('color_filter',res)
-# cv2.waitKey(0)
-# =============================================================================
-
-
+### Test with an image 
 # =============================================================================
 # #cv2.imshow("red part",red_part)
 # cv2.namedWindow("mini red part", cv2.WINDOW_NORMAL) # Create window with freedom of dimensions                        # Read image
@@ -68,9 +57,15 @@ def redColorFilter_simple(image):
 # #cv2.imshow("mini red part", imS)
 # cv2.namedWindow
 # #cv2.imshow("res",res)                            # Show image
-# cv2.waitKey(0)   ### RESULT: contains 
+# cv2.waitKey(0)  
 # =============================================================================
 
+
+
+
+
+
+####~~~~~~~~~~~~~~~~~~ UNDER CONSTRUCTION ~~~~~~~~~~~~~~~~~~~~~~~~###
 
 def redColorFilter_adaptive(IMG_NAME):
     # image is rgb, but cv2 understands it as bgr 
@@ -116,7 +111,6 @@ def simpleThreshold(IMG_NAME):
 # cv2.imshow('res',res)
 # cv2.waitKey(0)
 # =============================================================================
-
 
 
 
