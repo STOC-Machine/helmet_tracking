@@ -109,7 +109,7 @@ def showMeHelmet(IMG_SHAPE,x,y,h,w):
     fig.add_patch(obj)
     plt.show()
     
-showMeHelmet(IMG_SHAPE,x,y,h,w)
+#showMeHelmet(IMG_SHAPE,x,y,h,w)
 
 
 ## Info for Humans
@@ -122,4 +122,4 @@ def moveDrone(IMG_SHAPE,x,y,h,w):
     print('Move',y_direction,'by', delta_y)
     print('Move',z_direction,'by', delta_z)
 
-moveDrone(IMG_SHAPE,x,y,h,w)
+#moveDrone(IMG_SHAPE,x,y,h,w)

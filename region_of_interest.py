@@ -120,18 +120,19 @@ def maskingPolygonMaker(label_array):
     x,y = array2Coordinates(label_array)
     maxX, minX =max(x),min(x)
     maxY, minY =max(y),min(y)
-    polygons = np.array([
+    (h, w) = int((maxY-minY)[0]), int((maxX-minX)[0])
+    polygon = np.array([
             [(minX,minY), (maxX,minY),(maxX,maxY),(minX,maxY)]
             ])
     mask = np.zeros_like(label_array)
-    cv2.fillPoly(mask, polygons, 255)
+    cv2.fillPoly(mask, polygon, 255)
     result = np.zeros([mask.shape[0],mask.shape[1],3]) # Conveting to a color image
     result[:,:,0] = mask
     result[:,:,1] = mask
     result[:,:,2] = mask
     result = result.astype(np.uint8)
     
-    return result
+    return result, (h,w)
 
 def mask4ROI(image,isValidPixel,mode='biggest'):
     """
@@ -157,8 +158,8 @@ def mask4ROI(image,isValidPixel,mode='biggest'):
         x,y = array2Coordinates(label_arrays[0])
         maxX, minX =max(x),min(x)
         maxY, minY =max(y),min(y)
-        mask = maskingPolygonMaker(label_arrays[0])
-        return mask, (maxX+minX)/2, (maxY+minY)/2
+        mask, (h,w) = maskingPolygonMaker(label_arrays[0])
+        return mask, (maxX+minX)/2, (maxY+minY)/2,(h,w) 
     
     if mode=='biggest':
         island_areas = [] 
@@ -168,8 +169,8 @@ def mask4ROI(image,isValidPixel,mode='biggest'):
         x,y = array2Coordinates(label_arrays[biggest])
         maxX, minX =max(x),min(x)
         maxY, minY =max(y),min(y)
-        mask = maskingPolygonMaker(label_arrays[biggest])
-        return mask, (maxX+minX)/2, (maxY+minY)/2
+        mask,(h,w)  = maskingPolygonMaker(label_arrays[biggest])
+        return mask, int((maxX+minX)/2), int((maxY+minY)/2), (h,w) 
 
 def region_of_interest(image,mask):
     """
