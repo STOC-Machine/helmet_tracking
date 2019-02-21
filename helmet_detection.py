@@ -136,6 +136,7 @@ def test_video2():
              
         # Press ESC key to escape
         except KeyboardInterrupt:
+            print('interrupted')
             cap.release()
             cv2.destroyAllWindows()
             break   
