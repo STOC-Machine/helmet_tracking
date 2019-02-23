@@ -131,7 +131,6 @@ def maskingPolygonMaker(label_array):
     result[:,:,1] = mask
     result[:,:,2] = mask
     result = result.astype(np.uint8)
-    
     return result, (h,w)
 
 def mask4ROI(image,isValidPixel,mode='biggest'):
@@ -152,7 +151,7 @@ def mask4ROI(image,isValidPixel,mode='biggest'):
     """ 
     islands,label_arrays = getIslands(image,isValidPixel)
     if not islands:
-        return None, None, None
+        return None, 0, 0,(0,0)
     
     if mode=='top':
         x,y = array2Coordinates(label_arrays[0])

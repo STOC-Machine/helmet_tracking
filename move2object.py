@@ -94,19 +94,20 @@ w = 2/z
     
 ## Visualize
 def showMeHelmet(IMG_SHAPE,x,y,h,w):
-    H, W = IMG_SHAPE[0], IMG_SHAPE[1]
-    delta_x = x - (W/2)
-    delta_y = y - (H/2)
     import matplotlib.pyplot as plt
     from matplotlib.patches import Rectangle
-    plt.figure()
-    fig = plt.gca()
+    H, W = IMG_SHAPE[0], IMG_SHAPE[1]
+    if h*w > 0:
+        delta_x = x - (W/2)
+        delta_y = y - (H/2)
+        plt.figure()
+        fig = plt.gca()
+        plt.scatter([delta_x],[delta_y],color='black')
+        obj = Rectangle((delta_x-(w/2),delta_y-(h/2)), w,h,alpha=0.5,facecolor='red')
+        fig.add_patch(obj)
     plt.xlim(-W/2,W/2)
     plt.ylim(H/2,-H/2)
-    plt.scatter([delta_x],[delta_y],color='black')
     plt.scatter([0],[0],marker='+')
-    obj = Rectangle((delta_x-(w/2),delta_y-(h/2)), w,h,alpha=0.5,facecolor='red')
-    fig.add_patch(obj)
     plt.show()
     
 #showMeHelmet(IMG_SHAPE,x,y,h,w)
