@@ -43,6 +43,30 @@ def test(img):
 
     return img_ROI,centerX,centerY,(h,w)
 
+def test_verbose(img):
+    """
+    Returns picutres in the process.
+    ASSUMES:
+        -img: numpy.array, cv2 image in BGR,
+    RETURNS:
+        -img_ROI: numpy.array, cv2 image in BGR, image that shows ONLY around
+            the biggest red region in img
+        -centerX: int, x coordinate of the center of the ROI in img_ROI
+        -centerY: int, y coordinate of the center of the ROI in img_ROI
+    """
+    #color filtering
+    _,img_red = color_filter(img)
+    # noise canceling
+    img_noiseless = noise_cancel(img_red)
+    # resize
+    img_noiseless_small = cv2.resize(img_noiseless,(200,100))
+    img_small = cv2.resize(img,(200,100))
+    # region of interest
+    mask,centerX,centerY,(h,w)  = mask4ROI(img_noiseless_small,isColoredPixel)
+    img_ROI = region_of_interest(img_small,mask)
+
+    return img_red, img_noiseless,img_ROI,centerX,centerY
+
 
 ###---------RUN TEST with a single image---------###
 ## Test image
@@ -85,7 +109,7 @@ def test_pics(n):
             img = cv2.imread(name,1)
             img_small = cv2.resize(img,(200,100))
         ## Test image
-        a,b,img_ROI,(centerX,centerY) = test(img_small)
+        img_noise,img_noiseless,img_ROI, centerX,centerY = test_verbose(img_small)
         #  position
         if centerX:
             print('helmetX =',centerX, 'helmetY=',centerY)
@@ -97,9 +121,9 @@ def test_pics(n):
         ## Show
         cv2.imshow('original',img_small)
         cv2.waitKey(0)
-        cv2.imshow('noise',a)
+        cv2.imshow('noise',img_noise)
         cv2.waitKey(0)
-        cv2.imshow('noiseless',b)
+        cv2.imshow('noiseless',img_noiseless)
         cv2.waitKey(0)
         cv2.imshow('ROI',img_ROI)
         cv2.waitKey(0)
