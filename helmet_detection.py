@@ -38,9 +38,10 @@ def test(img):
     img_noiseless_small = cv2.resize(img_noiseless,(200,100))
     img_small = cv2.resize(img,(200,100))
     # region of interest
-    mask,centerX,centerY,(h,w)  = mask4ROI(img_noiseless_small,isColoredPixel) 
+    mask,centerX,centerY,(h,w)  = mask4ROI(img_noiseless_small,isColoredPixel)
     img_ROI = region_of_interest(img_small,mask)
-    return img_ROI,centerX,centerY,(h,w) 
+
+    return img_ROI,centerX,centerY,(h,w)
 
 
 ###---------RUN TEST with a single image---------###
@@ -84,7 +85,7 @@ def test_pics(n):
             img = cv2.imread(name,1)
             img_small = cv2.resize(img,(200,100))
         ## Test image
-        img_ROI,centerX,centerY = test(img_small)
+        a,b,img_ROI,(centerX,centerY) = test(img_small)
         #  position
         if centerX:
             print('helmetX =',centerX, 'helmetY=',centerY)
@@ -96,10 +97,14 @@ def test_pics(n):
         ## Show
         cv2.imshow('original',img_small)
         cv2.waitKey(0)
+        cv2.imshow('noise',a)
+        cv2.waitKey(0)
+        cv2.imshow('noiseless',b)
+        cv2.waitKey(0)
         cv2.imshow('ROI',img_ROI)
         cv2.waitKey(0)
 ## Uncomment line below to test many images
-# test_pics(11)
+test_pics(11)
 
 
 ###---------RUN TEST with a video---------###
@@ -109,17 +114,17 @@ def test_video():
         # read a frame
         _, frame = cap.read()
         #===== OPERATION ========#
-        result,_,_ = test(frame)  
-        cv2.imshow('result',result) 
+        result,_,_,_ = test(frame)
+        cv2.imshow('result',result)
         # Press ESC key to escape
         k = cv2.waitKey(5) & 0xFF
-        if k == 27: 
-            break   
+        if k == 27:
+            break
     cv2.destroyAllWindows()
 
 ## Uncomment line below to test a video
 #test_video()
-    
+
 def test_video2():
     cap = cv2.VideoCapture(0)
     while True:
@@ -127,18 +132,18 @@ def test_video2():
             # read a frame
             _, frame = cap.read()
             #===== OPERATION ========#
-            img_ROI,centerX,centerY,(h,w)  = test(frame)  
+            img_ROI,centerX,centerY,(h,w)  = test(frame)
             img_small = cv2.resize(frame,(200,100))
             IMG_SHAPE = img_small.shape[0],img_small.shape[1]
             plt.imshow(img_ROI)
             showMeHelmet(IMG_SHAPE,centerX,centerY,h,w)
             moveDrone(IMG_SHAPE,centerX,centerY,h,w)
-             
+
         # Press ESC key to escape
         except KeyboardInterrupt:
             print('interrupted')
             cap.release()
             cv2.destroyAllWindows()
-            break   
-   
-test_video2()
+            break
+
+#test_video2()
